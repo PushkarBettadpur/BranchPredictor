@@ -1,0 +1,62 @@
+/*********
+	Description of the various Scenarios that lead to stalls in Q1 and Q2********
+
+        Assume that Instructions are sequenced as I1, I2, I3 and so on
+
+        Q1 Scenarios:
+	Scenario A: I2 has a RAW dependency on I1 and results in a 2 cycle stall.
+        Scenario B: I3 has a RAW dependency on I1 while I2 does NOT have a RAW dependency on I1 and results in 1 cycle stall.
+        Scenario C: I2 AND I3 BOTH have a RAW dependency on I1. We should observe a 2 cycle stall as a result of I2 alone and not I3.
+       
+        Q2 Scenarios:
+
+        NOTE: All the Scenarios beginning with E have I1 as a Load Instruction
+
+        Scenario E1a: The Rs register of I2 (if required in the EX stage) has a RAW dependency on I1 (if its a load) which causes a 2 cycle stall
+        Scenario E1b: The Rt register of I2 (required in the MEM stage) has a RAW dependency on I1 which causes no stalls.
+        Scenario E2: The Rs register of I3 has a RAW dependency on I1 and I2 has no dependency (or is like E1b) which causes 1 stall.
+        Scenario E3: I2 AND I3 BOTH have a RAW dependency on I1. We should observe a 2 cycle stall as a result of I2 alone and not I3.
+        Scenario F: I2 has a RAW dependency on I1 and results in a 1 cycle stall.
+
+**********/
+
+#include <stdio.h>
+
+int main (int argc, char *argv[ ])
+{
+   int i;
+
+   // The for loops adds 2 stalls every cycle in Q1 and 1 stall every cycle in Q2
+   for (i = 0; i < 100000000; i++)
+   {
+	// Checks scenarios A and F
+   	// asm ("addi $8, $0, 10;");
+   	// asm ("addi $9, $8, 10;");
+
+	// Checks scenario B
+   	// asm ("addi $8, $0, 10;");
+   	// asm ("addi $9, $0, 10;");
+   	// asm ("subu $10, $8, 11;");
+
+	// Checks scenarios C and E3
+   	// asm ("lw $8, 100($0);");
+   	// asm ("sw $9, 10($8);");
+   	// asm ("multu $10, $8;");
+
+	// Checks scenario E1a
+   	// asm ("lw $8, 100($0);");
+   	// asm ("sw $9, 10($8);");
+	
+	// Checks scenario E1b
+   	// asm ("lw $8, 100($0);");
+   	// asm ("sw $8, 10($0);");
+
+	// Checks scenario E2
+   	// asm ("lw $8, 100($0);");
+   	// asm ("sw $8, 10($0);");
+   	// asm ("mult $9, $8;");
+        int x = 5;
+   }
+
+   return 0;
+}
